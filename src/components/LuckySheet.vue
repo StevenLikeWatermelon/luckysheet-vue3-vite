@@ -13,7 +13,7 @@
 
     <a href="javascript:void(0)" @click="downloadExcel">Download source xlsx file</a>
   </div>
-  <div id="stevenysheet"></div>
+  <div id="luckysheet"></div>
   <div v-show="isMaskShow" id="tip">Downloading</div>
 </template>
 
@@ -21,37 +21,37 @@
 import { ref, onMounted } from 'vue'
 import { exportExcel } from '../utils/export'
 import { isFunction } from '../utils/is'
-import StevenyExcel from 'stevenyexcel'
+import LuckyExcel from 'luckyexcel'
 
 const isMaskShow = ref(false)
 const selected = ref('')
 const jsonData = ref({})
 const options = ref([
-  { text: 'Money Manager.xlsx', value: 'https://minio.cnbabylon.com/public/stevenysheet/money-manager-2.xlsx' },
+  { text: 'Money Manager.xlsx', value: 'https://minio.cnbabylon.com/public/luckysheet/money-manager-2.xlsx' },
   {
     text: 'Activity costs tracker.xlsx',
-    value: 'https://minio.cnbabylon.com/public/stevenysheet/Activity%20costs%20tracker.xlsx',
+    value: 'https://minio.cnbabylon.com/public/luckysheet/Activity%20costs%20tracker.xlsx',
   },
   {
     text: 'House cleaning checklist.xlsx',
-    value: 'https://minio.cnbabylon.com/public/stevenysheet/House%20cleaning%20checklist.xlsx',
+    value: 'https://minio.cnbabylon.com/public/luckysheet/House%20cleaning%20checklist.xlsx',
   },
   {
     text: 'Student assignment planner.xlsx',
-    value: 'https://minio.cnbabylon.com/public/stevenysheet/Student%20assignment%20planner.xlsx',
+    value: 'https://minio.cnbabylon.com/public/luckysheet/Student%20assignment%20planner.xlsx',
   },
   {
     text: 'Credit card tracker.xlsx',
-    value: 'https://minio.cnbabylon.com/public/stevenysheet/Credit%20card%20tracker.xlsx',
+    value: 'https://minio.cnbabylon.com/public/luckysheet/Credit%20card%20tracker.xlsx',
   },
-  { text: 'Blue timesheet.xlsx', value: 'https://minio.cnbabylon.com/public/stevenysheet/Blue%20timesheet.xlsx' },
+  { text: 'Blue timesheet.xlsx', value: 'https://minio.cnbabylon.com/public/luckysheet/Blue%20timesheet.xlsx' },
   {
     text: 'Student calendar (Mon).xlsx',
-    value: 'https://minio.cnbabylon.com/public/stevenysheet/Student%20calendar%20%28Mon%29.xlsx',
+    value: 'https://minio.cnbabylon.com/public/luckysheet/Student%20calendar%20%28Mon%29.xlsx',
   },
   {
     text: 'Blue mileage and expense report.xlsx',
-    value: 'https://minio.cnbabylon.com/public/stevenysheet/Blue%20mileage%20and%20expense%20report.xlsx',
+    value: 'https://minio.cnbabylon.com/public/luckysheet/Blue%20mileage%20and%20expense%20report.xlsx',
   },
 ])
 
@@ -69,7 +69,7 @@ const loadExcel = (evt) => {
     alert('Currently only supports the import of xlsx files')
     return
   }
-  StevenyExcel.transformExcelToSteveny(files[0], function (exportJson, stevenysheetfile) {
+  LuckyExcel.transformExcelToLucky(files[0], function (exportJson, luckysheetfile) {
     if (exportJson.sheets == null || exportJson.sheets.length == 0) {
       alert('Failed to read the content of the excel file, currently does not support xls files!')
       return
@@ -77,10 +77,10 @@ const loadExcel = (evt) => {
     console.log('exportJson', exportJson)
     jsonData.value = exportJson
 
-    isFunction(window?.stevenysheet?.destroy) && window.stevenysheet.destroy()
+    isFunction(window?.luckysheet?.destroy) && window.luckysheet.destroy()
 
-    window.stevenysheet.create({
-      container: 'stevenysheet', //stevenysheet is the container id
+    window.luckysheet.create({
+      container: 'luckysheet', //luckysheet is the container id
       showinfobar: false,
       data: exportJson.sheets,
       title: exportJson.info.name,
@@ -97,7 +97,7 @@ const selectExcel = (evt) => {
   }
   isMaskShow.value = true
 
-  StevenyExcel.transformExcelToStevenyByUrl(value, name, (exportJson, stevenysheetfile) => {
+  LuckyExcel.transformExcelToLuckyByUrl(value, name, (exportJson, luckysheetfile) => {
     if (exportJson.sheets == null || exportJson.sheets.length == 0) {
       alert('Failed to read the content of the excel file, currently does not support xls files!')
       return
@@ -107,10 +107,10 @@ const selectExcel = (evt) => {
 
     isMaskShow.value = false
 
-    isFunction(window?.stevenysheet?.destroy) && window.stevenysheet.destroy()
+    isFunction(window?.luckysheet?.destroy) && window.luckysheet.destroy()
 
-    window.stevenysheet.create({
-      container: 'stevenysheet', //stevenysheet is the container id
+    window.luckysheet.create({
+      container: 'luckysheet', //luckysheet is the container id
       showinfobar: false,
       data: exportJson.sheets,
       title: exportJson.info.name,
@@ -126,27 +126,27 @@ const downloadExcel = () => {
   //     return;
   // }
   //
-  // var elemIF = document.getElementById("Steveny-download-frame");
+  // var elemIF = document.getElementById("Lucky-download-frame");
   // if(elemIF==null){
   //     elemIF = document.createElement("iframe");
   //     elemIF.style.display = "none";
-  //     elemIF.id = "Steveny-download-frame";
+  //     elemIF.id = "Lucky-download-frame";
   //     document.body.appendChild(elemIF);
   // }
   // elemIF.src = value;
-  exportExcel(stevenysheet.getAllSheets(), '下载')
+  exportExcel(luckysheet.getAllSheets(), '下载')
 }
 
-// !!! create stevenysheet after mounted
+// !!! create luckysheet after mounted
 onMounted(() => {
-  stevenysheet.create({
-    container: 'stevenysheet',
+  luckysheet.create({
+    container: 'luckysheet',
   })
 })
 </script>
 
 <style scoped>
-#stevenysheet {
+#luckysheet {
   margin: 0px;
   padding: 0px;
   position: absolute;

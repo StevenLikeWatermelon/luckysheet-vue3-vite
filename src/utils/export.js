@@ -3,15 +3,15 @@ import Excel from 'exceljs'
 
 import FileSaver from 'file-saver'
 
-const exportExcel = function(stevenysheet, value) {
-  // 参数为stevenysheet.getstevenysheetfile()获取的对象
+const exportExcel = function(luckysheet, value) {
+  // 参数为luckysheet.getluckysheetfile()获取的对象
   // 1.创建工作簿，可以为工作簿添加属性
   const workbook = new Excel.Workbook()
   // 2.创建表格，第二个参数可以配置创建什么样的工作表
-  if (Object.prototype.toString.call(stevenysheet) === '[object Object]') {
-    stevenysheet = [stevenysheet]
+  if (Object.prototype.toString.call(luckysheet) === '[object Object]') {
+    luckysheet = [luckysheet]
   }
-  stevenysheet.forEach(function(table) {
+  luckysheet.forEach(function(table) {
     if (table.data.length === 0) return  true
     // ws.getCell('B2').fill = fills.
     const worksheet = workbook.addWorksheet(table.name)
@@ -37,8 +37,8 @@ const exportExcel = function(stevenysheet, value) {
   return buffer
 }
 
-var setMerge = function(stevenyMerge = {}, worksheet) {
-  const mergearr = Object.values(stevenyMerge)
+var setMerge = function(luckyMerge = {}, worksheet) {
+  const mergearr = Object.values(luckyMerge)
   mergearr.forEach(function(elem) {
     // elem格式：{r: 0, c: 0, rs: 1, cs: 2}
     // 按开始行，开始列，结束行，结束列合并（相当于 K10:M12）
@@ -51,10 +51,10 @@ var setMerge = function(stevenyMerge = {}, worksheet) {
   })
 }
 
-var setBorder = function(stevenyBorderInfo, worksheet) {
-  if (!Array.isArray(stevenyBorderInfo)) return
-  // console.log('stevenyBorderInfo', stevenyBorderInfo)
-  stevenyBorderInfo.forEach(function(elem) {
+var setBorder = function(luckyBorderInfo, worksheet) {
+  if (!Array.isArray(luckyBorderInfo)) return
+  // console.log('luckyBorderInfo', luckyBorderInfo)
+  luckyBorderInfo.forEach(function(elem) {
     // 现在只兼容到borderType 为range的情况
     // console.log('ele', elem)
     if (elem.rangeType === 'range') {
@@ -157,8 +157,8 @@ var fontConvert = function(
   cl = 0,
   ul = 0
 ) {
-  // stevenysheet：ff(样式), fc(颜色), bl(粗体), it(斜体), fs(大小), cl(删除线), ul(下划线)
-  const stevenyToExcel = {
+  // luckysheet：ff(样式), fc(颜色), bl(粗体), it(斜体), fs(大小), cl(删除线), ul(下划线)
+  const luckyToExcel = {
     0: '微软雅黑',
     1: '宋体（Song）',
     2: '黑体（ST Heiti）',
@@ -176,17 +176,17 @@ var fontConvert = function(
       return num === 0 ? false : true
     }
   }
-  // 出现Bug，导入的时候ff为stevenyToExcel的val
+  // 出现Bug，导入的时候ff为luckyToExcel的val
 
   let font = {
-    name: typeof ff === 'number' ? stevenyToExcel[ff] : ff,
+    name: typeof ff === 'number' ? luckyToExcel[ff] : ff,
     family: 1,
     size: fs,
     color: { argb: fc.replace('#', '') },
-    bold: stevenyToExcel.num2bl(bl),
-    italic: stevenyToExcel.num2bl(it),
-    underline: stevenyToExcel.num2bl(ul),
-    strike: stevenyToExcel.num2bl(cl)
+    bold: luckyToExcel.num2bl(bl),
+    italic: luckyToExcel.num2bl(it),
+    underline: luckyToExcel.num2bl(ul),
+    strike: luckyToExcel.num2bl(cl)
   }
 
   return font
@@ -198,8 +198,8 @@ var alignmentConvert = function(
   tb = 'default',
   tr = 'default'
 ) {
-  // stevenysheet:vt(垂直), ht(水平), tb(换行), tr(旋转)
-  const stevenyToExcel = {
+  // luckysheet:vt(垂直), ht(水平), tb(换行), tr(旋转)
+  const luckyToExcel = {
     vertical: {
       0: 'middle',
       1: 'top',
@@ -230,20 +230,20 @@ var alignmentConvert = function(
   }
 
   let alignment = {
-    vertical: stevenyToExcel.vertical[vt],
-    horizontal: stevenyToExcel.horizontal[ht],
-    wrapText: stevenyToExcel.wrapText[tb],
-    textRotation: stevenyToExcel.textRotation[tr]
+    vertical: luckyToExcel.vertical[vt],
+    horizontal: luckyToExcel.horizontal[ht],
+    wrapText: luckyToExcel.wrapText[tb],
+    textRotation: luckyToExcel.textRotation[tr]
   }
   return alignment
 }
 
 var borderConvert = function(borderType, style = 1, color = '#000') {
-  // 对应stevenysheet的config中borderinfo的的参数
+  // 对应luckysheet的config中borderinfo的的参数
   if (!borderType) {
     return {}
   }
-  const stevenyToExcel = {
+  const luckyToExcel = {
     type: {
       'border-all': 'all',
       'border-top': 'top',
@@ -269,17 +269,17 @@ var borderConvert = function(borderType, style = 1, color = '#000') {
     }
   }
   let template = {
-    style: stevenyToExcel.style[style],
+    style: luckyToExcel.style[style],
     color: { argb: color.replace('#', '') }
   }
   let border = {}
-  if (stevenyToExcel.type[borderType] === 'all') {
+  if (luckyToExcel.type[borderType] === 'all') {
     border['top'] = template
     border['right'] = template
     border['bottom'] = template
     border['left'] = template
   } else {
-    border[stevenyToExcel.type[borderType]] = template
+    border[luckyToExcel.type[borderType]] = template
   }
   // console.log('border', border)
   return border
@@ -287,7 +287,7 @@ var borderConvert = function(borderType, style = 1, color = '#000') {
 
 function addborderToCell(borders, row_index, col_index) {
   let border = {}
-  const stevenyExcel = {
+  const luckyExcel = {
     type: {
       l: 'left',
       r: 'right',
@@ -315,13 +315,13 @@ function addborderToCell(borders, row_index, col_index) {
   for (const bor in borders) {
     // console.log(bor)
     if (borders[bor].color.indexOf('rgb') === -1) {
-      border[stevenyExcel.type[bor]] = {
-        style: stevenyExcel.style[borders[bor].style],
+      border[luckyExcel.type[bor]] = {
+        style: luckyExcel.style[borders[bor].style],
         color: { argb: borders[bor].color.replace('#', '') }
       }
     } else {
-      border[stevenyExcel.type[bor]] = {
-        style: stevenyExcel.style[borders[bor].style],
+      border[luckyExcel.type[bor]] = {
+        style: luckyExcel.style[borders[bor].style],
         color: { argb: borders[bor].color }
       }
     }
