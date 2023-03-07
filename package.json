@@ -1,11 +1,11 @@
 {
-  "name": "luckysheet-vue3-vite",
+  "name": "stevenysheet-vue3-vite",
   "private": true,
   "version": "0.0.1",
   "author": "hjwforever",
   "keywords": [
-    "luckysheet",
-    "luckyexcel",
+    "stevenysheet",
+    "stevenyexcel",
     "excel",
     "xlsx",
     "vite",
@@ -13,7 +13,7 @@
     "vue",
     "table"
   ],
-  "description": "luckysheet + Vue3 + Vite demo",
+  "description": "stevenysheet + Vue3 + Vite demo",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -22,7 +22,7 @@
   "dependencies": {
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
-    "luckyexcel": "^1.0.1",
+    "stevenyexcel": "^1.0.1",
     "vue": "^3.2.25"
   },
   "devDependencies": {
